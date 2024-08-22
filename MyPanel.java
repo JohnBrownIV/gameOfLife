@@ -11,16 +11,12 @@ int[][] tiles;
 int[][] tilesBuffer;
 int tileWidth;
 int tileHeight;
-ArrayList<Integer> occupiedX;
-ArrayList<Integer> occupiedY;
  
  MyPanel(){
   
   //image = new ImageIcon("sky.png").getImage();
   int startWidth = 1300;
   int startHeight = 800;
-  occupiedX = new ArrayList<Integer>();
-  occupiedY = new ArrayList<Integer>();
   this.setPreferredSize(new Dimension(startWidth,startHeight));
   tileWidth = startWidth/10;
   tileHeight = startHeight/10;
@@ -31,14 +27,17 @@ ArrayList<Integer> occupiedY;
   tiles[31][31] = 1;
   tiles[32][31] = 1;
   tiles[31][32] = 1;
+  //Blinker
+  tiles[60][60] = 1;
+  tiles[61][60] = 1;
+  tiles[62][60] = 1;
   tilesBuffer = new int[tileWidth][tileHeight];
   //(int)(Math.random() * tileWidth) + 1//This is the random code for width I guess
   /*for (int i = 0; i < 50; i++) {
     tiles[(int)(Math.random() * tileWidth) + 0][(int)(Math.random() * tileHeight) + 0] = 1;
   }*/
-  timer = new Timer(300, this);
+  timer = new Timer(1500, this);
 	timer.start();
-  startup();
 
  }
  
@@ -53,12 +52,23 @@ ArrayList<Integer> occupiedY;
   g2D.setPaint(Color.white);
   g2D.setFont(new Font("Comic Sans MS",Font.BOLD,10));
 
-  if (occupiedX.size() > 0) {
-    for (int i = 0; i < occupiedX.size(); i++) {
-      g2D.setPaint(Color.white);
-      g2D.fillRect(occupiedX.get(i) * 10, occupiedY.get(i) * 10,10,10);
-      g2D.setPaint(Color.red);
-      g2D.drawString("E",occupiedX.get(i) * 10, occupiedY.get(i) * 10 + 10);
+  for (int x = 0; x < tileWidth; x++) {
+    for (int y = 0; y < tileHeight; y++) {
+      if (tiles[x][y] == 1) {
+        g2D.setPaint(Color.white);
+        g2D.fillRect(x * 10, y * 10, 10, 10);
+        g2D.setPaint(Color.red);
+        g2D.drawString(String.valueOf(surroundCount(x,y)),(x * 10) + 3, (y * 10) + 10);
+      } else {
+        g2D.setPaint(Color.blue);
+        g2D.fillRect((x * 10) + 2, (y * 10) + 2, 6, 6);
+        if (surroundCount(x,y) == 3) {
+          g2D.setPaint(Color.green);
+          g2D.fillRect((x * 10) + 2, (y * 10) + 2, 6, 6);
+        }
+        g2D.setPaint(Color.red);
+        g2D.drawString(String.valueOf(surroundCount(x,y)),(x * 10) + 3, (y * 10) + 10);
+      }
     }
   }
 
@@ -68,8 +78,6 @@ ArrayList<Integer> occupiedY;
   @Override
   //Timer event that triggers event
 	public void actionPerformed(ActionEvent e) {
-    occupiedX.clear();
-    occupiedY.clear();
     for (int x = 0; x < tileWidth; x++) {
       for (int y = 0; y < tileHeight; y++) {
         frameCheck(x,y);
@@ -77,21 +85,6 @@ ArrayList<Integer> occupiedY;
     }
     repaint();
     tiles = Arrays.copyOf(tilesBuffer,tilesBuffer.length);
-  }
-
-  //Does the first frame without updates
-  public void startup() {
-    occupiedX.clear();
-    occupiedY.clear();
-    for (int x = 0; x < tileWidth; x++) {
-      for (int y = 0; y < tileHeight; y++) {
-        if (tiles[x][y] == 1) {
-          occupiedX.add(x);
-          occupiedY.add(y);
-        }
-      }
-    }
-    repaint();
   }
 
   public int surroundCount(int xTile, int yTile) {
@@ -121,7 +114,9 @@ ArrayList<Integer> occupiedY;
     if (alive) {
       if (surround == 2 || surround == 3) {
         alive = true;
-      } else {
+      } else if (surround == 1) {
+        alive = false;
+      } else if (surround >= 4) {
         alive = false;
       }
     } else if (surround == 3) {
@@ -129,8 +124,6 @@ ArrayList<Integer> occupiedY;
     }
     if (alive) {
       tilesBuffer[xTile][yTile] = 1;
-      occupiedX.add(xTile);
-      occupiedY.add(yTile);
     } else {
       tilesBuffer[xTile][yTile] = 0;
     }
