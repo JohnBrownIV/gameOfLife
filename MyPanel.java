@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class MyPanel extends JPanel implements ActionListener {
 
@@ -8,12 +9,16 @@ Timer timer;
 int[][] tiles;
 int tileWidth;
 int tileHeight;
+ArrayList<Integer> occupiedX;
+ArrayList<Integer> occupiedY;
  
  MyPanel(){
   
   //image = new ImageIcon("sky.png").getImage();
   int startWidth = 1300;
   int startHeight = 800;
+  occupiedX = new ArrayList<Integer>();
+  occupiedY = new ArrayList<Integer>();
   this.setPreferredSize(new Dimension(startWidth,startHeight));
   tileWidth = startWidth/10;
   tileHeight = startHeight/10;
@@ -37,11 +42,9 @@ int tileHeight;
 
   g2D.setPaint(Color.white);
 
-  for (int x = 0; x < tileWidth; x++) {
-    for (int y = 0; y < tileHeight; y++) {
-      if (tiles[x][y] == 1) {
-        g2D.fillRect((x) * 10, (y) * 10, 10, 10);
-      }
+  if (occupiedX.size() > 0) {
+    for (int i = 0; i < occupiedX.size(); i++) {
+      g2D.fillRect(occupiedX.get(i) * 10, occupiedY.get(i) * 10,10,10);
     }
   }
 
@@ -50,6 +53,14 @@ int tileHeight;
  }
   @Override
 	public void actionPerformed(ActionEvent e) {
+      for (int x = 0; x < tileWidth; x++) {
+    for (int y = 0; y < tileHeight; y++) {
+      if (tiles[x][y] == 1) {
+        occupiedX.add(x);
+        occupiedX.add(y);
+      }
+    }
+  }
     repaint();
   }
 
@@ -68,5 +79,6 @@ int tileHeight;
       total += tiles[xTile - 1][yTile];
       total += tiles[xTile + 1][yTile];
     }
+    return total;
   }
 }
