@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MyPanel extends JPanel implements ActionListener {
+public class MyPanel extends JPanel implements ActionListener, MouseListener {
 
 Timer timer;
 int[][] tiles;
@@ -148,5 +148,28 @@ int tileHeight;
         tiles[(int)(Math.random() * density) + (clusterX - (density / 2))][(int)(Math.random() * density) + (clusterY - (density / 2))] = 1;
       }
     }
+  }
+
+  //MOUSE OVERRIDES
+
+  @Override
+  public void mouseClicked(MouseEvent e) {
+    System.out.println("clicked");
+  }
+  @Override
+  public void mouseEntered(MouseEvent e) {
+    System.out.println("Mouse entered");
+  }
+  @Override
+  public void mouseExited(MouseEvent e) {
+
+  }
+  @Override
+  public void mousePressed(MouseEvent e) {
+
+  }
+  @Override
+  public void mouseReleased(MouseEvent e) {
+
   }
 }
