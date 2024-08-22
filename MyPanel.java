@@ -36,7 +36,7 @@ int tileHeight;
   /*for (int i = 0; i < 50; i++) {
     tiles[(int)(Math.random() * tileWidth) + 0][(int)(Math.random() * tileHeight) + 0] = 1;
   }*/
-  timer = new Timer(1500, this);
+  timer = new Timer(500, this);
 	timer.start();
 
  }
@@ -57,17 +57,21 @@ int tileHeight;
       if (tiles[x][y] == 1) {
         g2D.setPaint(Color.white);
         g2D.fillRect(x * 10, y * 10, 10, 10);
-        g2D.setPaint(Color.red);
-        g2D.drawString(String.valueOf(surroundCount(x,y)),(x * 10) + 3, (y * 10) + 10);
-      } else {
+        /*if (surroundCount(x,y) < 2 || surroundCount(x,y) > 3) {//This is for debugging
+          g2D.setPaint(Color.red);
+          g2D.fillRect((x * 10) + 2, (y * 10) + 2, 6, 6);
+        }
         g2D.setPaint(Color.blue);
+        g2D.drawString(String.valueOf(surroundCount(x,y)),(x * 10) + 3, (y * 10) + 10);*/
+      } else {
+        /*g2D.setPaint(Color.blue); //This is for debugging
         g2D.fillRect((x * 10) + 2, (y * 10) + 2, 6, 6);
         if (surroundCount(x,y) == 3) {
           g2D.setPaint(Color.green);
           g2D.fillRect((x * 10) + 2, (y * 10) + 2, 6, 6);
         }
         g2D.setPaint(Color.red);
-        g2D.drawString(String.valueOf(surroundCount(x,y)),(x * 10) + 3, (y * 10) + 10);
+        g2D.drawString(String.valueOf(surroundCount(x,y)),(x * 10) + 3, (y * 10) + 10);*/
       }
     }
   }
@@ -84,7 +88,8 @@ int tileHeight;
       }
     }
     repaint();
-    tiles = Arrays.copyOf(tilesBuffer,tilesBuffer.length);
+    //tiles = Arrays.copyOf(tilesBuffer,tilesBuffer.length);
+    buffToTile();
   }
 
   public int surroundCount(int xTile, int yTile) {
@@ -126,6 +131,13 @@ int tileHeight;
       tilesBuffer[xTile][yTile] = 1;
     } else {
       tilesBuffer[xTile][yTile] = 0;
+    }
+  }
+  public void buffToTile() {
+    for (int x = 0; x < tileWidth; x++) {
+      for (int y = 0; y < tileHeight; y++) {
+        tiles[x][y] = tilesBuffer[x][y];
+      }
     }
   }
 }
