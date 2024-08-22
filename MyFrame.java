@@ -27,6 +27,9 @@ public class MyFrame extends JFrame implements KeyListener {
  @Override
 	public void keyPressed(KeyEvent e) {
     //System.out.println(e.getKeyCode());
+    if (e.getKeyCode() == 27) {
+      panel.togglePause();
+    }
   }
   @Override
 	public void keyReleased(KeyEvent e) {

@@ -11,13 +11,18 @@ int[][] tiles;
 int[][] tilesBuffer;
 int tileWidth;
 int tileHeight;
+int genAppears;
+boolean running;
  
  MyPanel(){
   
   //image = new ImageIcon("sky.png").getImage();
   int startWidth = 1300;
   int startHeight = 800;
+  boolean running = true;
+  genAppears = 0;
   this.setPreferredSize(new Dimension(startWidth,startHeight));
+  this.addMouseListener(this);
   tileWidth = startWidth/10;
   tileHeight = startHeight/10;
   tiles = new int[tileWidth][tileHeight];
@@ -50,7 +55,26 @@ int tileHeight;
   g2D.fillRect(0, 0, 1300, 800);
 
   g2D.setPaint(Color.white);
-  g2D.setFont(new Font("Comic Sans MS",Font.BOLD,10));
+  g2D.setFont(new Font("Comic Sans MS",Font.BOLD,20));
+  if (running != true) {
+    g2D.drawString("PAUSED", (tileWidth * 10) - 100, 20);
+  }
+  if (genAppears > 0) {
+    switch (genAppears) {
+      case 3:
+        g2D.setPaint(Color.white);
+        break;
+      case 2:
+        g2D.setPaint(Color.gray);
+        break;
+      case 1:
+        g2D.setPaint(Color.darkGray);
+        break;
+      default:
+    }
+    g2D.drawString("A new generation generates",0,20);
+    genAppears--;
+  }
 
   for (int x = 0; x < tileWidth; x++) {
     for (int y = 0; y < tileHeight; y++) {
@@ -89,6 +113,11 @@ int tileHeight;
     }
     repaint();
     //tiles = Arrays.copyOf(tilesBuffer,tilesBuffer.length);
+    //Small chance to add a random cluster
+    if ((Math.random() * 100) + 1 > 95) {
+      genClustersActive(1,(int)(Math.random() * 10) + 5,(int)(Math.random() * 10) + 5);
+      genAppears = 3;
+    }
     buffToTile();
   }
 
@@ -149,16 +178,24 @@ int tileHeight;
       }
     }
   }
-
-  //MOUSE OVERRIDES
-
+  public void genClustersActive(int clusters, int density, int fill) {
+    int clusterX;
+    int clusterY;
+    for (int i = 0; i < clusters; i++) {
+      clusterX = (int)(Math.random() * (tileWidth - (density + 5))) + density;
+      clusterY = (int)(Math.random() * (tileHeight - (density + 5))) + density;
+      for (int k = 0; k < fill; k++) {
+        tilesBuffer[(int)(Math.random() * density) + (clusterX - (density / 2))][(int)(Math.random() * density) + (clusterY - (density / 2))] = 1;
+      }
+    }
+  }
   @Override
   public void mouseClicked(MouseEvent e) {
-    System.out.println("clicked");
+
   }
   @Override
   public void mouseEntered(MouseEvent e) {
-    System.out.println("Mouse entered");
+
   }
   @Override
   public void mouseExited(MouseEvent e) {
@@ -166,10 +203,22 @@ int tileHeight;
   }
   @Override
   public void mousePressed(MouseEvent e) {
-
+    tiles[e.getPoint().x / 10][e.getPoint().y / 10] = 1;
+    repaint();
   }
   @Override
   public void mouseReleased(MouseEvent e) {
-
+    tiles[e.getPoint().x / 10][e.getPoint().y / 10] = 1;
+    repaint();
+  }
+  public void togglePause() {
+    if (running) {
+      running = false;
+      timer.stop();
+      repaint();
+    } else {
+      running = true;
+      timer.start();
+    }
   }
 }
