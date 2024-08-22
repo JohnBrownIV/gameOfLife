@@ -57,7 +57,7 @@ ArrayList<Integer> occupiedY;
     for (int y = 0; y < tileHeight; y++) {
       if (tiles[x][y] == 1) {
         occupiedX.add(x);
-        occupiedX.add(y);
+        occupiedY.add(y);
       }
     }
   }
