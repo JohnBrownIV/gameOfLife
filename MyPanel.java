@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MyPanel extends JPanel implements ActionListener {
 
@@ -25,18 +26,19 @@ ArrayList<Integer> occupiedY;
   tileHeight = startHeight/10;
   tiles = new int[tileWidth][tileHeight];
   //Trying to make a sample floater
-  tiles[5][5] = 1;
-  tiles[6][6] = 1;
-  tiles[6][7] = 1;
-  tiles[5][7] = 1;
-  tiles[4][7] = 1;
+  tiles[30][30] = 1;
+  tiles[32][30] = 1;
+  tiles[31][31] = 1;
+  tiles[32][31] = 1;
+  tiles[31][32] = 1;
   tilesBuffer = new int[tileWidth][tileHeight];
   //(int)(Math.random() * tileWidth) + 1//This is the random code for width I guess
-  for (int i = 0; i < 50; i++) {
+  /*for (int i = 0; i < 50; i++) {
     tiles[(int)(Math.random() * tileWidth) + 0][(int)(Math.random() * tileHeight) + 0] = 1;
-  }
+  }*/
   timer = new Timer(300, this);
 	timer.start();
+  startup();
 
  }
  
@@ -64,22 +66,37 @@ ArrayList<Integer> occupiedY;
   
  }
   @Override
+  //Timer event that triggers event
 	public void actionPerformed(ActionEvent e) {
     occupiedX.clear();
     occupiedY.clear();
-    tilesBuffer = tiles;
     for (int x = 0; x < tileWidth; x++) {
       for (int y = 0; y < tileHeight; y++) {
         frameCheck(x,y);
       }
     }
-    tiles = tilesBuffer;
+    repaint();
+    tiles = Arrays.copyOf(tilesBuffer,tilesBuffer.length);
+  }
+
+  //Does the first frame without updates
+  public void startup() {
+    occupiedX.clear();
+    occupiedY.clear();
+    for (int x = 0; x < tileWidth; x++) {
+      for (int y = 0; y < tileHeight; y++) {
+        if (tiles[x][y] == 1) {
+          occupiedX.add(x);
+          occupiedY.add(y);
+        }
+      }
+    }
     repaint();
   }
 
   public int surroundCount(int xTile, int yTile) {
     int total = 0;
-    if ((xTile > 1 && xTile < tileWidth - 1) && (yTile > 1 && yTile < tileHeight - 1)) {
+    if ((xTile > 1) && (xTile < tileWidth - 1) && (yTile > 1) && (yTile < tileHeight - 1)) {
       //Bottom Row
       total += tiles[xTile - 1][yTile - 1];
       total += tiles[xTile][yTile - 1];
