@@ -21,7 +21,7 @@ int tileHeight;
   tileWidth = startWidth/10;
   tileHeight = startHeight/10;
   tiles = new int[tileWidth][tileHeight];
-  //Trying to make a sample floater
+  /*//Trying to make a sample floater
   tiles[30][30] = 1;
   tiles[32][30] = 1;
   tiles[31][31] = 1;
@@ -30,12 +30,12 @@ int tileHeight;
   //Blinker
   tiles[60][60] = 1;
   tiles[61][60] = 1;
-  tiles[62][60] = 1;
+  tiles[62][60] = 1;*/
   tilesBuffer = new int[tileWidth][tileHeight];
-  //(int)(Math.random() * tileWidth) + 1//This is the random code for width I guess
-  /*for (int i = 0; i < 50; i++) {
+  /*for (int i = 0; i < 50; i++) {//Simple random generation
     tiles[(int)(Math.random() * tileWidth) + 0][(int)(Math.random() * tileHeight) + 0] = 1;
   }*/
+  genClusters(50,5,5);
   timer = new Timer(500, this);
 	timer.start();
 
@@ -119,9 +119,7 @@ int tileHeight;
     if (alive) {
       if (surround == 2 || surround == 3) {
         alive = true;
-      } else if (surround == 1) {
-        alive = false;
-      } else if (surround >= 4) {
+      } else {
         alive = false;
       }
     } else if (surround == 3) {
@@ -137,6 +135,17 @@ int tileHeight;
     for (int x = 0; x < tileWidth; x++) {
       for (int y = 0; y < tileHeight; y++) {
         tiles[x][y] = tilesBuffer[x][y];
+      }
+    }
+  }
+  public void genClusters(int clusters, int density, int fill) {
+    int clusterX;
+    int clusterY;
+    for (int i = 0; i < clusters; i++) {
+      clusterX = (int)(Math.random() * (tileWidth - (density + 3))) + density;
+      clusterY = (int)(Math.random() * (tileHeight - (density + 3))) + density;
+      for (int k = 0; k < fill; k++) {
+        tiles[(int)(Math.random() * density) + (clusterX - (density / 2))][(int)(Math.random() * density) + (clusterY - (density / 2))] = 1;
       }
     }
   }
