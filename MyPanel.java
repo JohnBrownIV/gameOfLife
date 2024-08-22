@@ -13,13 +13,15 @@ int tileWidth;
 int tileHeight;
 int genAppears;
 boolean running;
+boolean highSpeed;
  
  MyPanel(){
   
   //image = new ImageIcon("sky.png").getImage();
   int startWidth = 1300;
   int startHeight = 800;
-  boolean running = true;
+  running = true;
+  highSpeed = false;
   genAppears = 0;
   this.setPreferredSize(new Dimension(startWidth,startHeight));
   this.addMouseListener(this);
@@ -219,6 +221,19 @@ boolean running;
     } else {
       running = true;
       timer.start();
+    }
+  }
+  public void toggleSpeed() {
+    if (highSpeed) {
+      timer.stop();
+      timer = new Timer(500, this);
+	    timer.start();
+      highSpeed = false;
+    } else {
+      timer.stop();
+      timer = new Timer(5, this);
+	    timer.start();
+      highSpeed = true;
     }
   }
 }

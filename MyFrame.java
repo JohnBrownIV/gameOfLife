@@ -29,6 +29,8 @@ public class MyFrame extends JFrame implements KeyListener {
     //System.out.println(e.getKeyCode());
     if (e.getKeyCode() == 27) {
       panel.togglePause();
+    } else if (e.getKeyCode() == 49) {
+      panel.toggleSpeed();
     }
   }
   @Override
