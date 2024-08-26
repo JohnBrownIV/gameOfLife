@@ -32,7 +32,9 @@ public class MyFrame extends JFrame implements KeyListener {
     } else if (e.getKeyCode() == 49) {
       panel.toggleSpeed();
     } else if (e.getKeyCode() == 50) {
-      panel.switchPlaceMode();
+      panel.switchPlaceMode(1);
+    } else if (e.getKeyCode() == 51) {
+      panel.switchPlaceMode(2);
     }
   }
   @Override

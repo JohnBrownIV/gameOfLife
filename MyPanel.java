@@ -194,12 +194,21 @@ int placeMode;
       }
     }
   }
-  public void switchPlaceMode() {
-    if (placeMode < 6) {
-      placeMode++;
+  public void switchPlaceMode(int direction) {
+    if (direction == 2) {
+      if (placeMode < 6) {
+        placeMode++;
+      } else {
+        placeMode = 1;
+      }
     } else {
-      placeMode = 1;
+      if (placeMode > 1) {
+        placeMode--;
+      } else {
+        placeMode = 6;
+      }
     }
+    repaint();
   }
   public void spawnFloater(int inX, int inY, int direction) {
     switch (direction) {
@@ -219,14 +228,24 @@ int placeMode;
         tiles[inX][inY + 1] = 1;
         tiles[inX + 1][inY + 1] = 1;
         break;
+      case 3: //Down Left
+        tiles[inX][inY] = 0;
+        tiles[inX][inY - 1] = 1;
+        tiles[inX - 1][inY] = 1;
+        tiles[inX + 1][inY + 1] = 1;
+        tiles[inX][inY + 1] = 1;
+        tiles[inX - 1][inY + 1] = 1;
+        break;
+      case 4: //Up Left
+        tiles[inX][inY] = 0;
+        tiles[inX][inY + 1] = 1;
+        tiles[inX - 1][inY] = 1;
+        tiles[inX + 1][inY - 1] = 1;
+        tiles[inX][inY - 1] = 1;
+        tiles[inX - 1][inY - 1] = 1;
+        break;
       default:
     }
-    tiles[inX][inY] = 0;
-    tiles[inX][inY + 1] = 1;
-    tiles[inX + 1][inY] = 1;
-    tiles[inX - 1][inY - 1] = 1;
-    tiles[inX][inY - 1] = 1;
-    tiles[inX + 1][inY - 1] = 1;
   }
   @Override
   public void mouseClicked(MouseEvent e) {
@@ -281,6 +300,9 @@ int placeMode;
     }
   }
   public void toggleSpeed() {
+    if (running == false) {
+      running = true;
+    }
     if (highSpeed) {
       timer.stop();
       timer = new Timer(500, this);
