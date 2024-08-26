@@ -190,7 +190,13 @@ int placeMode;
       clusterX = (int)(Math.random() * (tileWidth - (density + 5))) + density;
       clusterY = (int)(Math.random() * (tileHeight - (density + 5))) + density;
       for (int k = 0; k < fill; k++) {
-        tilesBuffer[(int)(Math.random() * density) + (clusterX - (density / 2))][(int)(Math.random() * density) + (clusterY - (density / 2))] = 1;
+        try {
+          tilesBuffer[(int)(Math.random() * density) + (clusterX - (density / 2))][(int)(Math.random() * density) + (clusterY - (density / 2))] = 1;
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+          //It no worked
+          System.out.println("SAVED FROM ERRORS");
+        }
       }
     }
   }
