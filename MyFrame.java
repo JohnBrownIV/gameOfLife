@@ -31,6 +31,8 @@ public class MyFrame extends JFrame implements KeyListener {
       panel.togglePause();
     } else if (e.getKeyCode() == 49) {
       panel.toggleSpeed();
+    } else if (e.getKeyCode() == 50) {
+      panel.switchPlaceMode();
     }
   }
   @Override

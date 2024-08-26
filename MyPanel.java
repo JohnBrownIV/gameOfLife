@@ -14,12 +14,14 @@ int tileHeight;
 int genAppears;
 boolean running;
 boolean highSpeed;
+int placeMode;
  
  MyPanel(){
   
   //image = new ImageIcon("sky.png").getImage();
   int startWidth = 1300;
   int startHeight = 800;
+  placeMode = 1;
   running = true;
   highSpeed = false;
   genAppears = 0;
@@ -54,13 +56,14 @@ boolean highSpeed;
 
   g2D.setPaint(Color.black);
 
-  g2D.fillRect(0, 0, 1300, 800);
+  g2D.fillRect(0, 0, tileWidth * 10, tileHeight * 10);
 
   g2D.setPaint(Color.white);
   g2D.setFont(new Font("Comic Sans MS",Font.BOLD,20));
   if (running != true) {
     g2D.drawString("PAUSED", (tileWidth * 10) - 100, 20);
   }
+  g2D.drawString("Place Mode: " + placeMode, (tileWidth * 10) - 150, 40);
   if (genAppears > 0) {
     switch (genAppears) {
       case 3:
@@ -191,6 +194,40 @@ boolean highSpeed;
       }
     }
   }
+  public void switchPlaceMode() {
+    if (placeMode < 6) {
+      placeMode++;
+    } else {
+      placeMode = 1;
+    }
+  }
+  public void spawnFloater(int inX, int inY, int direction) {
+    switch (direction) {
+      case 1: //Up right
+        tiles[inX][inY] = 0;
+        tiles[inX][inY + 1] = 1;
+        tiles[inX + 1][inY] = 1;
+        tiles[inX - 1][inY - 1] = 1;
+        tiles[inX][inY - 1] = 1;
+        tiles[inX + 1][inY - 1] = 1;
+        break;
+      case 2: //Down right
+        tiles[inX][inY] = 0;
+        tiles[inX][inY - 1] = 1;
+        tiles[inX + 1][inY] = 1;
+        tiles[inX - 1][inY + 1] = 1;
+        tiles[inX][inY + 1] = 1;
+        tiles[inX + 1][inY + 1] = 1;
+        break;
+      default:
+    }
+    tiles[inX][inY] = 0;
+    tiles[inX][inY + 1] = 1;
+    tiles[inX + 1][inY] = 1;
+    tiles[inX - 1][inY - 1] = 1;
+    tiles[inX][inY - 1] = 1;
+    tiles[inX + 1][inY - 1] = 1;
+  }
   @Override
   public void mouseClicked(MouseEvent e) {
 
@@ -205,13 +242,33 @@ boolean highSpeed;
   }
   @Override
   public void mousePressed(MouseEvent e) {
-    tiles[e.getPoint().x / 10][e.getPoint().y / 10] = 1;
+    switch (placeMode) {
+      case 1://Single pixel
+        tiles[e.getPoint().x / 10][e.getPoint().y / 10] = 1;
+        break;
+      case 2: //Floater up right
+        spawnFloater(e.getPoint().x / 10, e.getPoint().y / 10,1);
+        break;
+      case 3: //Floater down right
+        spawnFloater(e.getPoint().x / 10, e.getPoint().y / 10,2);
+        break;
+      case 4: //Floater down left
+        spawnFloater(e.getPoint().x / 10, e.getPoint().y / 10,3);
+        break;
+      case 5: //Floater up left
+        spawnFloater(e.getPoint().x / 10, e.getPoint().y / 10,4);
+        break;
+      case 6: //Clear pixel
+        tiles[e.getPoint().x / 10][e.getPoint().y / 10] = 0;
+        break;
+      default:
+    }
     repaint();
   }
   @Override
   public void mouseReleased(MouseEvent e) {
-    tiles[e.getPoint().x / 10][e.getPoint().y / 10] = 1;
-    repaint();
+    //tiles[e.getPoint().x / 10][e.getPoint().y / 10] = 1;
+    //repaint();
   }
   public void togglePause() {
     if (running) {
