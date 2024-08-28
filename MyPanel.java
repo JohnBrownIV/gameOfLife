@@ -195,7 +195,7 @@ int placeMode;
         }
         catch (ArrayIndexOutOfBoundsException e) {
           //It no worked
-          System.out.println("SAVED FROM ERRORS");
+          //System.out.println("SAVED FROM ERRORS");
         }
       }
     }
@@ -290,7 +290,7 @@ int placeMode;
       default:
     }
     } catch (ArrayIndexOutOfBoundsException b) {
-      System.out.println("SAVED FROM MOUSE ERROR");
+      //System.out.println("SAVED FROM MOUSE ERROR");
     }
     repaint();
   }
