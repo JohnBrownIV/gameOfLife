@@ -267,6 +267,7 @@ int placeMode;
   }
   @Override
   public void mousePressed(MouseEvent e) {
+    try {
     switch (placeMode) {
       case 1://Single pixel
         tiles[e.getPoint().x / 10][e.getPoint().y / 10] = 1;
@@ -287,6 +288,9 @@ int placeMode;
         tiles[e.getPoint().x / 10][e.getPoint().y / 10] = 0;
         break;
       default:
+    }
+    } catch (ArrayIndexOutOfBoundsException b) {
+      System.out.println("SAVED FROM MOUSE ERROR");
     }
     repaint();
   }
