@@ -1,14 +1,13 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MyPanel extends JPanel implements ActionListener, MouseListener {
 
 Timer timer;
 int[][] tiles;
 int[][] tilesBuffer;
+int tilePxSize;
 int tileWidth;
 int tileHeight;
 int genAppears;
@@ -21,14 +20,15 @@ int placeMode;
   //image = new ImageIcon("sky.png").getImage();
   int startWidth = 1300;
   int startHeight = 800;
+  tilePxSize = 5;
   placeMode = 1;
   running = true;
   highSpeed = false;
   genAppears = 0;
   this.setPreferredSize(new Dimension(startWidth,startHeight));
   this.addMouseListener(this);
-  tileWidth = startWidth/10;
-  tileHeight = startHeight/10;
+  tileWidth = startWidth/tilePxSize;
+  tileHeight = startHeight/tilePxSize;
   tiles = new int[tileWidth][tileHeight];
   /*//Trying to make a sample floater
   tiles[30][30] = 1;
@@ -56,14 +56,14 @@ int placeMode;
 
   g2D.setPaint(Color.black);
 
-  g2D.fillRect(0, 0, tileWidth * 10, tileHeight * 10);
+  g2D.fillRect(0, 0, tileWidth * tilePxSize, tileHeight * tilePxSize);
 
   g2D.setPaint(Color.white);
   g2D.setFont(new Font("Comic Sans MS",Font.BOLD,20));
   if (running != true) {
-    g2D.drawString("PAUSED", (tileWidth * 10) - 100, 20);
+    g2D.drawString("PAUSED", (tileWidth * tilePxSize) - 100, 20);
   }
-  g2D.drawString("Place Mode: " + placeMode, (tileWidth * 10) - 150, 40);
+  g2D.drawString("Place Mode: " + placeMode, (tileWidth * tilePxSize) - 150, 40);
   if (genAppears > 0) {
     switch (genAppears) {
       case 3:
@@ -84,8 +84,8 @@ int placeMode;
   for (int x = 0; x < tileWidth; x++) {
     for (int y = 0; y < tileHeight; y++) {
       if (tiles[x][y] == 1) {
-        g2D.setPaint(Color.white);
-        g2D.fillRect(x * 10, y * 10, 10, 10);
+        g2D.setPaint(Color.red);
+        g2D.fillRect(x * tilePxSize, y * tilePxSize, tilePxSize, tilePxSize);
         /*if (surroundCount(x,y) < 2 || surroundCount(x,y) > 3) {//This is for debugging
           g2D.setPaint(Color.red);
           g2D.fillRect((x * 10) + 2, (y * 10) + 2, 6, 6);
@@ -270,22 +270,22 @@ int placeMode;
     try {
     switch (placeMode) {
       case 1://Single pixel
-        tiles[e.getPoint().x / 10][e.getPoint().y / 10] = 1;
+        tiles[e.getPoint().x / tilePxSize][e.getPoint().y / tilePxSize] = 1;
         break;
       case 2: //Floater up right
-        spawnFloater(e.getPoint().x / 10, e.getPoint().y / 10,1);
+        spawnFloater(e.getPoint().x / tilePxSize, e.getPoint().y / tilePxSize,1);
         break;
       case 3: //Floater down right
-        spawnFloater(e.getPoint().x / 10, e.getPoint().y / 10,2);
+        spawnFloater(e.getPoint().x / tilePxSize, e.getPoint().y / tilePxSize,2);
         break;
       case 4: //Floater down left
-        spawnFloater(e.getPoint().x / 10, e.getPoint().y / 10,3);
+        spawnFloater(e.getPoint().x / tilePxSize, e.getPoint().y / tilePxSize,3);
         break;
       case 5: //Floater up left
-        spawnFloater(e.getPoint().x / 10, e.getPoint().y / 10,4);
+        spawnFloater(e.getPoint().x / tilePxSize, e.getPoint().y / tilePxSize,4);
         break;
       case 6: //Clear pixel
-        tiles[e.getPoint().x / 10][e.getPoint().y / 10] = 0;
+        tiles[e.getPoint().x / tilePxSize][e.getPoint().y / tilePxSize] = 0;
         break;
       default:
     }
