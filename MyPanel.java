@@ -127,7 +127,7 @@ int placeMode;
     buffToTile();
   }
 
-  public int surroundCount(int xTile, int yTile) {
+  public int surroundCount(5int xTile, int yTile) {
     int total = 0;
     if ((xTile > 1) && (xTile < tileWidth - 1) && (yTile > 1) && (yTile < tileHeight - 1)) {
       //Bottom Row
