@@ -14,16 +14,12 @@ int genAppears;
 boolean running;
 boolean highSpeed;
 int placeMode;
-int colorShift;
-Color col;
  
  MyPanel(){
   
   //image = new ImageIcon("sky.png").getImage();
   int startWidth = 1300;
   int startHeight = 800;
-  colorShift = 0;
-  col = new Color(255, 0, 0);
   tilePxSize = 5;
   placeMode = 1;
   running = true;
@@ -61,7 +57,7 @@ Color col;
   g2D.setPaint(Color.black);
 
   g2D.fillRect(0, 0, tileWidth * tilePxSize, tileHeight * tilePxSize);
-  colorShift = 0;
+
 
   g2D.setPaint(Color.white);
   g2D.setFont(new Font("Comic Sans MS",Font.BOLD,20));
@@ -89,11 +85,7 @@ Color col;
   for (int x = 0; x < tileWidth; x++) {
     for (int y = 0; y < tileHeight; y++) {
       if (tiles[x][y] == 1) {
-        colorShift++;
-        if (colorShift > 254) {
-          colorShift = 254;
-        }
-        g2D.setPaint(new Color(255 - colorShift, 0, 0 + colorShift));
+        g2D.setPaint(Color.red);
         g2D.fillRect(x * tilePxSize, y * tilePxSize, tilePxSize, tilePxSize);
         /*if (surroundCount(x,y) < 2 || surroundCount(x,y) > 3) {//This is for debugging
           g2D.setPaint(Color.red);
