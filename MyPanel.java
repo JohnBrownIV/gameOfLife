@@ -20,7 +20,7 @@ int placeMode;
   //image = new ImageIcon("sky.png").getImage();
   int startWidth = 1300;
   int startHeight = 800;
-  tilePxSize = 5;
+  tilePxSize = 2;
   placeMode = 1;
   running = true;
   highSpeed = false;
